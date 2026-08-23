@@ -52,12 +52,12 @@ O objetivo é produzir uma base pronta para análises de:
 
 ```
 .
-├── trabalho_eda_texto_agnews_COLAB.ipynb  # Notebook principal (Google Colab)
-├── trabalho_eda_texto_agnews.py           # Script Python equivalente
-├── agnews_embeddings_1000.csv             # Dataset gerado (1.000 amostras)
-├── gerar_notebook_colab.py                # Script gerador do .ipynb
-├── descrição.txt                          # Enunciado oficial do trabalho
-└── README.md                              # Este arquivo
+|-- trabalho_eda_texto_agnews_COLAB.ipynb  # Notebook principal (Google Colab)
+|-- trabalho_eda_texto_agnews.py           # Script Python equivalente
+|-- agnews_embeddings_1000.csv             # Dataset gerado (1.000 amostras)
+|-- gerar_notebook_colab.py                # Script gerador do .ipynb
+|-- descrição.txt                          # Enunciado oficial do trabalho
+ -- README.md                              # Este arquivo
 ```
 
 ---
@@ -88,15 +88,15 @@ python trabalho_eda_texto_agnews.py
 
 ```
 AG News (Hugging Face)
-        ↓
+        ->
 Amostragem estratificada (250/classe x 4 = 1.000 textos)
-        ↓
+        ->
 Sentence Transformer: all-MiniLM-L6-v2
-        ↓
+        ->
 Vetor de 384 dimensões por notícia
-        ↓
+        ->
 DataFrame tabular (1.000 x 392)
-        ↓
+        ->
 Exportação: agnews_embeddings_1000.csv
 ```
 
