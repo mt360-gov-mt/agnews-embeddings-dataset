@@ -1,0 +1,39 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Ambiente virtual
+venv/
+.env/
+env/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Dataset grande (opcional — descomente se quiser excluir do git)
+# agnews_embeddings_1000.csv
+
+# Cache do Hugging Face
+.cache/
+~/.cache/huggingface/
+
+# Logs e temporários
+*.log
+*.tmp
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# Arquivos de saída de modelos
+*.bin
+*.pt
+*.pth
