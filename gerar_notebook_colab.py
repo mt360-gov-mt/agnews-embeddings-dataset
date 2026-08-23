@@ -22,7 +22,7 @@ def cell_code(source):
 
 cells = []
 
-# ── Título ────────────────────────────────────────────────────────────────
+# -- Título ----------------------------------------------------------------
 cells.append(cell_md([
     "# Trabalho — EDA Multimodal: Modalidade Texto\n",
     "\n",
@@ -34,14 +34,14 @@ cells.append(cell_md([
     "\n",
     "**Lógica central:**\n",
     "\n",
-    "> Pergunta → Representação → Qualidade → Exploração → Hipótese → Classificação\n",
+    "> Pergunta -> Representação -> Qualidade -> Exploração -> Hipótese -> Classificação\n",
     "\n",
     "Atividade baseada na **Seção 10** do Laboratório de Ciência de Dados — EDA Multimodal.\n",
     "\n",
-    "> ⚠️ **Nota:** Ative GPU em `Ambiente de execução → Alterar tipo → T4 GPU` para maior velocidade."
+    "> [AVISO] **Nota:** Ative GPU em `Ambiente de execução -> Alterar tipo -> T4 GPU` para maior velocidade."
 ]))
 
-# ── Seção 0 — Setup ───────────────────────────────────────────────────────
+# -- Seção 0 — Setup -------------------------------------------------------
 cells.append(cell_md(["## Seção 0 — Setup do Ambiente"]))
 
 cells.append(cell_code([
@@ -66,10 +66,10 @@ cells.append(cell_code([
     "random.seed(RANDOM_STATE)\n",
     "pd.set_option('display.max_columns', 50)\n",
     "\n",
-    "print('✅ Ambiente configurado com sucesso.')"
+    "print('[OK] Ambiente configurado com sucesso.')"
 ]))
 
-# ── Seção 1 — Pergunta ────────────────────────────────────────────────────
+# -- Seção 1 — Pergunta ----------------------------------------------------
 cells.append(cell_md([
     "## Item 1 — Pergunta de Investigação\n",
     "\n",
@@ -90,18 +90,18 @@ cells.append(cell_code([
     "Os embeddings semânticos do MiniLM conseguem separar as\n",
     "quatro categorias de notícias do AG News:\n",
     "\n",
-    "  → World    (Mundo / Política internacional)\n",
-    "  → Sports   (Esportes)\n",
-    "  → Business (Negócios / Economia)\n",
-    "  → Sci/Tech (Ciência e Tecnologia)\n",
+    "  -> World    (Mundo / Política internacional)\n",
+    "  -> Sports   (Esportes)\n",
+    "  -> Business (Negócios / Economia)\n",
+    "  -> Sci/Tech (Ciência e Tecnologia)\n",
     "\n",
     "...de forma que um classificador simples (Regressão Logística)\n",
     "alcance desempenho razoável sem fine-tuning do modelo?\n",
     "\"\"\")\n",
-    "print('✅ Item 1 — Pergunta de investigação definida.')"
+    "print('[OK] Item 1 — Pergunta de investigação definida.')"
 ]))
 
-# ── Seção 2 — Unidade de Análise ──────────────────────────────────────────
+# -- Seção 2 — Unidade de Análise ------------------------------------------
 cells.append(cell_md([
     "## Item 2 — Unidade de Análise + Carregamento dos Dados\n",
     "\n",
@@ -119,7 +119,7 @@ cells.append(cell_code([
     "from datasets import load_dataset\n",
     "\n",
     "AG_LABEL_NAMES   = ['World', 'Sports', 'Business', 'Sci/Tech']\n",
-    "N_TEXT_PER_CLASS = 250  # 250 × 4 classes = 1.000 amostras (mínimo exigido)\n",
+    "N_TEXT_PER_CLASS = 250  # 250 x 4 classes = 1.000 amostras (mínimo exigido)\n",
     "\n",
     "print('Carregando dataset AG News...')\n",
     "ag = load_dataset('fancyzhx/ag_news')\n",
@@ -137,13 +137,13 @@ cells.append(cell_code([
     "})\n",
     "df_raw['class_name'] = df_raw['label'].map(dict(enumerate(AG_LABEL_NAMES)))\n",
     "\n",
-    "print(f'Dataset carregado: {df_raw.shape[0]} notícias × {df_raw.shape[1]} colunas')\n",
+    "print(f'Dataset carregado: {df_raw.shape[0]} notícias x {df_raw.shape[1]} colunas')\n",
     "print('\\nDistribuição das classes:')\n",
     "display(df_raw['class_name'].value_counts().to_frame())\n",
     "df_raw.head(3)"
 ]))
 
-# ── Seção 3 — Features / Embeddings ──────────────────────────────────────
+# -- Seção 3 — Features / Embeddings --------------------------------------
 cells.append(cell_md([
     "## Item 3 — Features Utilizadas (Extração de Embeddings)\n",
     "\n",
@@ -177,7 +177,7 @@ cells.append(cell_code([
     ")\n",
     "\n",
     "print(f'\\nFormato dos embeddings: {X_text.shape}')\n",
-    "print(f'  → {X_text.shape[0]} notícias × {X_text.shape[1]} dimensões')\n",
+    "print(f'  -> {X_text.shape[0]} notícias x {X_text.shape[1]} dimensões')\n",
     "\n",
     "text_feature_names = [f'f_{i:03d}' for i in range(X_text.shape[1])]\n",
     "df_text = pd.DataFrame(X_text, columns=text_feature_names)\n",
@@ -188,7 +188,7 @@ cells.append(cell_code([
     "display(df_text[text_feature_names[:6] + ['class_name']].head())"
 ]))
 
-# ── Dataset Final ───────────────────────────────────────────────────────────
+# -- Dataset Final -----------------------------------------------------------
 cells.append(cell_md([
     "## Dataset Final — Estrutura e Exportação\n",
     "\n",
@@ -221,9 +221,9 @@ cells.append(cell_code([
     "df_final['n_chars']      = df_raw['n_chars'].values\n",
     "df_final['text_preview'] = df_raw['text'].str[:80].values\n",
     "\n",
-    "print(f'Shape: {df_final.shape[0]} amostras × {df_final.shape[1]} colunas')\n",
-    "status = '✅ (≥ 1.000)' if df_final.shape[0] >= 1000 else '❌ (< 1.000 — INSUFICIENTE)'\n",
-    "print(f'  → {df_final.shape[0]} amostras {status}')\n",
+    "print(f'Shape: {df_final.shape[0]} amostras x {df_final.shape[1]} colunas')\n",
+    "status = '[OK] (>= 1.000)' if df_final.shape[0] >= 1000 else '[ERRO] (< 1.000 — INSUFICIENTE)'\n",
+    "print(f'  -> {df_final.shape[0]} amostras {status}')\n",
     "\n",
     "# Prévia das colunas de metadados\n",
     "meta_cols = ['sample_id','label','class_name','source','license','n_words','n_chars']\n",
@@ -232,19 +232,19 @@ cells.append(cell_code([
     "# Exportação para CSV\n",
     "csv_path = 'agnews_embeddings_1000.csv'\n",
     "df_final.to_csv(csv_path, index=False, encoding='utf-8')\n",
-    "print(f'\\n✅ Dataset exportado: {csv_path}')\n",
-    "print(f'   {df_final.shape[0]} linhas × {df_final.shape[1]} colunas')\n",
+    "print(f'\\n[OK] Dataset exportado: {csv_path}')\n",
+    "print(f'   {df_final.shape[0]} linhas x {df_final.shape[1]} colunas')\n",
     "\n",
     "# No Colab: download automático do arquivo\n",
     "try:\n",
     "    from google.colab import files\n",
     "    files.download(csv_path)\n",
-    "    print('✅ Download iniciado automaticamente.')\n",
+    "    print('[OK] Download iniciado automaticamente.')\n",
     "except ImportError:\n",
     "    print(f'Arquivo salvo localmente: {csv_path}')\n"
 ]))
 
-# ── Seção 4 — Qualidade ───────────────────────────────────────────────────
+# -- Seção 4 — Qualidade ---------------------------------------------------
 cells.append(cell_md([
     "## Item 4 — Análise de Qualidade dos Embeddings\n",
     "\n",
@@ -268,7 +268,7 @@ cells.append(cell_code([
     "# 4.1 Valores ausentes\n",
     "print('\\n[4.1] Valores ausentes nos embeddings:')\n",
     "total_missing = df_text[text_feature_names].isna().sum().sum()\n",
-    "print(f'  → {total_missing} valores ausentes' if total_missing > 0 else '  ✅ Nenhum valor ausente.')\n",
+    "print(f'  -> {total_missing} valores ausentes' if total_missing > 0 else '  [OK] Nenhum valor ausente.')\n",
     "\n",
     "# 4.2 Duplicatas\n",
     "print('\\n[4.2] Duplicatas:')\n",
@@ -315,10 +315,10 @@ cells.append(cell_code([
     "        .head(5)[['class_name','anomaly_score','text']]\n",
     "        .assign(text=lambda d: d['text'].str[:120] + '...'))\n",
     "\n",
-    "print('\\n✅ Item 4 — Análise de qualidade concluída.')"
+    "print('\\n[OK] Item 4 — Análise de qualidade concluída.')"
 ]))
 
-# ── Seção 5 — Visualizações ───────────────────────────────────────────────
+# -- Seção 5 — Visualizações -----------------------------------------------
 cells.append(cell_md([
     "## Item 5 — Visualizações\n",
     "\n",
@@ -390,16 +390,16 @@ cells.append(cell_code([
     "plt.tight_layout()\n",
     "plt.show()\n",
     "print(f'  Variância explicada pelos 8 PCs: {pca_vis.explained_variance_ratio_.sum()*100:.1f}%')\n",
-    "print('\\n✅ Item 5 — Visualizações concluídas.')"
+    "print('\\n[OK] Item 5 — Visualizações concluídas.')"
 ]))
 
-# ── Seção 6 — PCA 2D ─────────────────────────────────────────────────────
+# -- Seção 6 — PCA 2D -----------------------------------------------------
 cells.append(cell_md([
     "## Item 6 — Projeção PCA 2D\n",
     "\n",
-    "Reduzimos os embeddings de **384 → 2 dimensões** para visualizar graficamente a separação.\n",
+    "Reduzimos os embeddings de **384 -> 2 dimensões** para visualizar graficamente a separação.\n",
     "\n",
-    "> ⚠️ **Atenção:** PCA 2D preserva apenas uma fração da variância original.\n",
+    "> [AVISO] **Atenção:** PCA 2D preserva apenas uma fração da variância original.\n",
     "> Um espaço pouco separável em 2D pode ainda ser **muito separável em alta dimensão**."
 ]))
 
@@ -434,10 +434,10 @@ cells.append(cell_code([
     "ax.grid(alpha=0.2)\n",
     "plt.tight_layout()\n",
     "plt.show()\n",
-    "print('\\n✅ Item 6 — PCA 2D concluído.')"
+    "print('\\n[OK] Item 6 — PCA 2D concluído.')"
 ]))
 
-# ── Seção 7 — Hipótese ────────────────────────────────────────────────────
+# -- Seção 7 — Hipótese ----------------------------------------------------
 cells.append(cell_md([
     "## Item 7 — Hipótese sobre Separabilidade\n",
     "\n",
@@ -448,20 +448,20 @@ cells.append(cell_md([
     "|---|---|\n",
     "| **H1** | *Sports* será a categoria mais fácil de separar (vocabulário muito específico) |\n",
     "| **H2** | *Business* e *World* terão maior sobreposição (vocabulário compartilhado) |\n",
-    "| **H3** | F1 macro ≥ 0.80 (embeddings MiniLM suficientemente discriminativos sem fine-tuning) |\n",
+    "| **H3** | F1 macro >= 0.80 (embeddings MiniLM suficientemente discriminativos sem fine-tuning) |\n",
     "\n",
     "**Ordem esperada de separabilidade:** Sports > Sci/Tech > World ≈ Business"
 ]))
 
 cells.append(cell_code([
     "print('Hipóteses formuladas antes da classificação:')\n",
-    "print('  H1: Sports → mais separável (vocabulário específico)')\n",
-    "print('  H2: Business/World → maior confusão (vocabulário próximo)')\n",
-    "print('  H3: F1 macro ≥ 0.80')\n",
-    "print('\\n✅ Item 7 — Hipótese formulada.')"
+    "print('  H1: Sports -> mais separável (vocabulário específico)')\n",
+    "print('  H2: Business/World -> maior confusão (vocabulário próximo)')\n",
+    "print('  H3: F1 macro >= 0.80')\n",
+    "print('\\n[OK] Item 7 — Hipótese formulada.')"
 ]))
 
-# ── Seção 8 — Regressão Logística ────────────────────────────────────────
+# -- Seção 8 — Regressão Logística ----------------------------------------
 cells.append(cell_md([
     "## Item 8 — Teste com Regressão Logística\n",
     "\n",
@@ -490,9 +490,9 @@ cells.append(cell_code([
     "clf.fit(X_train, y_train)\n",
     "y_pred = clf.predict(X_test)\n",
     "\n",
-    "print('─' * 60)\n",
+    "print('-' * 60)\n",
     "print('CLASSIFICATION REPORT')\n",
-    "print('─' * 60)\n",
+    "print('-' * 60)\n",
     "print(classification_report(y_test, y_pred, target_names=AG_LABEL_NAMES))\n",
     "\n",
     "fig, ax = plt.subplots(figsize=(7, 6))\n",
@@ -508,13 +508,13 @@ cells.append(cell_code([
     "acc      = accuracy_score(y_test, y_pred)\n",
     "print(f'Acurácia geral : {acc*100:.1f}%')\n",
     "print(f'F1 macro       : {f1_macro:.4f}')\n",
-    "print('\\n─ Comparação com as Hipóteses ─')\n",
-    "print('  H3:', '✅ CONFIRMADA' if f1_macro >= 0.80 else '❌ NÃO CONFIRMADA', f'(F1={f1_macro:.2f})')\n",
-    "print('  → Verifique H1 e H2 no classification_report acima.')\n",
-    "print('\\n✅ Item 8 — Classificação concluída.')"
+    "print('\\n- Comparação com as Hipóteses -')\n",
+    "print('  H3:', '[OK] CONFIRMADA' if f1_macro >= 0.80 else '[ERRO] NÃO CONFIRMADA', f'(F1={f1_macro:.2f})')\n",
+    "print('  -> Verifique H1 e H2 no classification_report acima.')\n",
+    "print('\\n[OK] Item 8 — Classificação concluída.')"
 ]))
 
-# ── Seção 9 — Limitações ─────────────────────────────────────────────────
+# -- Seção 9 — Limitações -------------------------------------------------
 cells.append(cell_md([
     "## Item 9 — Limitações da Análise\n",
     "\n",
@@ -528,10 +528,10 @@ cells.append(cell_md([
 ]))
 
 cells.append(cell_code([
-    "print('✅ Item 9 — Limitações documentadas na célula markdown acima.')"
+    "print('[OK] Item 9 — Limitações documentadas na célula markdown acima.')"
 ]))
 
-# ── Extensão — Label Noise ────────────────────────────────────────────────
+# -- Extensão — Label Noise ------------------------------------------------
 cells.append(cell_md([
     "## Extensão Opcional — Impacto do Label Noise\n",
     "\n",
@@ -594,28 +594,28 @@ cells.append(cell_code([
     "plt.suptitle('Impacto do Label Noise — AG News + MiniLM', fontsize=14, fontweight='bold')\n",
     "plt.tight_layout()\n",
     "plt.show()\n",
-    "print('\\n✅ Extensão — Label Noise concluída.')"
+    "print('\\n[OK] Extensão — Label Noise concluída.')"
 ]))
 
-# ── Fim ───────────────────────────────────────────────────────────────────
+# -- Fim -------------------------------------------------------------------
 cells.append(cell_md([
-    "## ✅ Trabalho Concluído\n",
+    "## [OK] Trabalho Concluído\n",
     "\n",
     "| Item | Status |\n",
     "|---|---|\n",
-    "| 1. Pergunta de investigação | ✅ |\n",
-    "| 2. Unidade de análise | ✅ |\n",
-    "| 3. Features utilizadas (MiniLM 384-dim) | ✅ |\n",
-    "| 4. Análise de qualidade | ✅ |\n",
-    "| 5. Visualizações (comprimento, norma L2, Parallel Coords) | ✅ |\n",
-    "| 6. Projeção PCA 2D | ✅ |\n",
-    "| 7. Hipótese sobre separabilidade | ✅ |\n",
-    "| 8. Regressão Logística + métricas | ✅ |\n",
-    "| 9. Limitações da análise | ✅ |\n",
-    "| Extensão: Label Noise | ✅ |"
+    "| 1. Pergunta de investigação | [OK] |\n",
+    "| 2. Unidade de análise | [OK] |\n",
+    "| 3. Features utilizadas (MiniLM 384-dim) | [OK] |\n",
+    "| 4. Análise de qualidade | [OK] |\n",
+    "| 5. Visualizações (comprimento, norma L2, Parallel Coords) | [OK] |\n",
+    "| 6. Projeção PCA 2D | [OK] |\n",
+    "| 7. Hipótese sobre separabilidade | [OK] |\n",
+    "| 8. Regressão Logística + métricas | [OK] |\n",
+    "| 9. Limitações da análise | [OK] |\n",
+    "| Extensão: Label Noise | [OK] |"
 ]))
 
-# ── Montar notebook ───────────────────────────────────────────────────────
+# -- Montar notebook -------------------------------------------------------
 notebook = {
     "nbformat": 4,
     "nbformat_minor": 5,

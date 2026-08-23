@@ -8,7 +8,7 @@ Autor: [Seu Nome]
 =============================================================================
 
 Lógica central:
-  Pergunta → Representação → Qualidade → Exploração → Hipótese → Classificação
+  Pergunta -> Representação -> Qualidade -> Exploração -> Hipótese -> Classificação
 
 Atividade baseada na Seção 10 do Laboratório de Ciência de Dados — EDA Multimodal.
 """
@@ -40,7 +40,7 @@ random.seed(RANDOM_STATE)
 
 pd.set_option("display.max_columns", 50)
 
-print("✅ Ambiente configurado com sucesso.")
+print("[OK] Ambiente configurado com sucesso.")
 
 
 # =============================================================================
@@ -68,10 +68,10 @@ print("""
 Os embeddings semânticos do MiniLM conseguem separar as
 quatro categorias de notícias do AG News:
 
-  → World    (Mundo / Política internacional)
-  → Sports   (Esportes)
-  → Business (Negócios / Economia)
-  → Sci/Tech (Ciência e Tecnologia)
+  -> World    (Mundo / Política internacional)
+  -> Sports   (Esportes)
+  -> Business (Negócios / Economia)
+  -> Sci/Tech (Ciência e Tecnologia)
 
 ...de forma que um classificador simples (Regressão Logística)
 alcance desempenho razoável sem fine-tuning do modelo?
@@ -81,7 +81,7 @@ Hipótese antecipada: categorias com vocabulário mais distinto
 linguagem próxima (Business vs World).
 """)
 
-print("✅ Item 1 — Pergunta de investigação definida.")
+print("[OK] Item 1 — Pergunta de investigação definida.")
 
 
 # =============================================================================
@@ -95,13 +95,13 @@ Cada LINHA do DataFrame representa UMA NOTÍCIA do dataset AG News.
 Após a geração dos embeddings, cada notícia é representada por um
 vetor numérico de 384 dimensões (gerado pelo MiniLM).
 
-  → Linha  = 1 notícia (título + corpo em inglês)
-  → Coluna = 1 dimensão do embedding semântico (f_000 até f_383)
-  → Classe = coluna 'class_name'
-             World    → notícias de política e assuntos internacionais
-             Sports   → notícias esportivas
-             Business → notícias de negócios e economia
-             Sci/Tech → notícias de ciência e tecnologia
+  -> Linha  = 1 notícia (título + corpo em inglês)
+  -> Coluna = 1 dimensão do embedding semântico (f_000 até f_383)
+  -> Classe = coluna 'class_name'
+             World    -> notícias de política e assuntos internacionais
+             Sports   -> notícias esportivas
+             Business -> notícias de negócios e economia
+             Sci/Tech -> notícias de ciência e tecnologia
 
 O objetivo é verificar se as 384 dimensões do embedding semântico
 são suficientes para distinguir os quatro temas automaticamente.
@@ -110,7 +110,7 @@ são suficientes para distinguir os quatro temas automaticamente.
 from datasets import load_dataset
 
 AG_LABEL_NAMES = ["World", "Sports", "Business", "Sci/Tech"]
-N_TEXT_PER_CLASS = 250   # amostras por classe → 250 × 4 classes = 1.000 amostras (mínimo exigido)
+N_TEXT_PER_CLASS = 250   # amostras por classe -> 250 x 4 classes = 1.000 amostras (mínimo exigido)
 
 print("=" * 65)
 print("ITEM 2 — UNIDADE DE ANÁLISE")
@@ -118,10 +118,10 @@ print("=" * 65)
 print(f"""
 Unidade de análise: 1 notícia do AG News
 
-  Cada linha    → 1 notícia convertida em vetor de 384 dimensões
-  Cada coluna   → 1 feature semântica do MiniLM (f_000 a f_383)
-  Variável alvo → class_name ({' / '.join(AG_LABEL_NAMES)})
-  Amostra       → {N_TEXT_PER_CLASS} notícias por classe
+  Cada linha    -> 1 notícia convertida em vetor de 384 dimensões
+  Cada coluna   -> 1 feature semântica do MiniLM (f_000 a f_383)
+  Variável alvo -> class_name ({' / '.join(AG_LABEL_NAMES)})
+  Amostra       -> {N_TEXT_PER_CLASS} notícias por classe
                   = {N_TEXT_PER_CLASS * len(AG_LABEL_NAMES)} notícias no total
 """)
 
@@ -145,7 +145,7 @@ df_raw = pd.DataFrame({
 })
 df_raw["class_name"] = df_raw["label"].map(dict(enumerate(AG_LABEL_NAMES)))
 
-print(f"\nDataset carregado: {df_raw.shape[0]} notícias × {df_raw.shape[1]} colunas\n")
+print(f"\nDataset carregado: {df_raw.shape[0]} notícias x {df_raw.shape[1]} colunas\n")
 
 # Distribuição das classes
 print("Distribuição das classes:")
@@ -159,7 +159,7 @@ for cat in AG_LABEL_NAMES:
     print(f"\n[{cat}]\n{exemplo[:200]}...")
 print("-" * 65)
 
-print("\n✅ Item 2 — Unidade de análise concluído.")
+print("\n[OK] Item 2 — Unidade de análise concluído.")
 
 
 # =============================================================================
@@ -179,7 +179,7 @@ Por que MiniLM?
     ficam próximos no espaço vetorial
 
 Formato final: DataFrame com shape (480, 386)
-  → 480 linhas (notícias) × 384 features + colunas 'label' e 'class_name'
+  -> 480 linhas (notícias) x 384 features + colunas 'label' e 'class_name'
 """
 
 import torch
@@ -212,7 +212,7 @@ X_text = text_model.encode(
 )
 
 print(f"\nFormato dos embeddings: {X_text.shape}")
-print(f"  → {X_text.shape[0]} notícias × {X_text.shape[1]} dimensões\n")
+print(f"  -> {X_text.shape[0]} notícias x {X_text.shape[1]} dimensões\n")
 
 # Convertendo para DataFrame tabular
 text_feature_names = [f"f_{i:03d}" for i in range(X_text.shape[1])]
@@ -226,7 +226,7 @@ display_cols = text_feature_names[:6] + ["class_name"]
 print(df_text[display_cols].head().to_string())
 
 print(f"\nShape final: {df_text.shape}")
-print("\n✅ Item 3 — Features extraídas com sucesso.")
+print("\n[OK] Item 3 — Features extraídas com sucesso.")
 
 
 # =============================================================================
@@ -261,8 +261,8 @@ df_final["text_preview"] = df_raw["text"].str[:80].values
 print("=" * 65)
 print("DATASET FINAL — ESTRUTURA")
 print("=" * 65)
-print(f"\nShape : {df_final.shape[0]} amostras × {df_final.shape[1]} colunas")
-print(f"  → {df_final.shape[0]} amostras {'✅ (≥ 1.000)' if df_final.shape[0] >= 1000 else '❌ (< 1.000)'}")
+print(f"\nShape : {df_final.shape[0]} amostras x {df_final.shape[1]} colunas")
+print(f"  -> {df_final.shape[0]} amostras {'[OK] (>= 1.000)' if df_final.shape[0] >= 1000 else '[ERRO] (< 1.000)'}")
 print("\nColunas:")
 for col in df_final.columns[:6].tolist() + ["..."] + df_final.columns[-5:].tolist():
     print(f"  {col}")
@@ -274,8 +274,8 @@ print(df_final[meta_cols].head(3).to_string())
 # Exportação para CSV
 csv_path = "agnews_embeddings_1000.csv"
 df_final.to_csv(csv_path, index=False, encoding="utf-8")
-print(f"\n✅ Dataset exportado: '{csv_path}'")
-print(f"   Tamanho: {df_final.shape[0]} linhas × {df_final.shape[1]} colunas")
+print(f"\n[OK] Dataset exportado: '{csv_path}'")
+print(f"   Tamanho: {df_final.shape[0]} linhas x {df_final.shape[1]} colunas")
 print(f"   Arquivo: {__import__('os').path.abspath(csv_path)}")
 
 
@@ -288,10 +288,10 @@ ITEM 4: Análise de Qualidade
 ------------------------------
 Verificamos quatro tipos de problema nos embeddings gerados:
 
-  1. Valores ausentes  → embeddings com NaN (problema no pipeline)
-  2. Duplicatas        → vetores exatamente iguais (textos duplicados)
-  3. Balanceamento     → distribuição igualitária das classes?
-  4. Outliers          → IsolationForest para detecção multivariada
+  1. Valores ausentes  -> embeddings com NaN (problema no pipeline)
+  2. Duplicatas        -> vetores exatamente iguais (textos duplicados)
+  3. Balanceamento     -> distribuição igualitária das classes?
+  4. Outliers          -> IsolationForest para detecção multivariada
 
 NOTA: NaN em embeddings quase sempre indica problema no pipeline
 de processamento, não no fenômeno real.
@@ -306,18 +306,18 @@ print("\n[4.1] Valores ausentes nos embeddings:")
 missing = df_text[text_feature_names].isna().sum()
 total_missing = missing.sum()
 if total_missing == 0:
-    print("  ✅ Nenhum valor ausente encontrado.")
+    print("  [OK] Nenhum valor ausente encontrado.")
 else:
-    print(f"  ⚠️  {total_missing} valores ausentes detectados!")
+    print(f"  [AVISO]  {total_missing} valores ausentes detectados!")
     print(missing[missing > 0])
 
 # --- 4.2 Duplicatas ---
 print("\n[4.2] Duplicatas (vetores de embedding idênticos):")
 n_dup = df_text[text_feature_names].duplicated().sum()
 if n_dup == 0:
-    print("  ✅ Nenhuma duplicata encontrada.")
+    print("  [OK] Nenhuma duplicata encontrada.")
 else:
-    print(f"  ⚠️  {n_dup} vetores duplicados detectados.")
+    print(f"  [AVISO]  {n_dup} vetores duplicados detectados.")
 
 # Duplicatas no texto bruto
 n_dup_texto = df_raw["text"].duplicated().sum()
@@ -341,7 +341,7 @@ for p in ax.patches:
                 ha="center", va="bottom", fontsize=11)
 plt.tight_layout()
 plt.show()
-print("  → Dataset balanceado (amostragem estratificada de 120/classe)")
+print("  -> Dataset balanceado (amostragem estratificada de 120/classe)")
 
 # --- 4.4 Outliers com Isolation Forest ---
 print("\n[4.4] Outliers multivariados — Isolation Forest (contamination=5%):")
@@ -368,7 +368,7 @@ for _, row in top_out.iterrows():
     print(f"\n  [{row['class_name']}] score={row['anomaly_score']:.4f}")
     print(f"  {row['text'][:150]}...")
 
-print("\n✅ Item 4 — Análise de qualidade concluída.")
+print("\n[OK] Item 4 — Análise de qualidade concluída.")
 
 
 # =============================================================================
@@ -379,14 +379,14 @@ print("\n✅ Item 4 — Análise de qualidade concluída.")
 ITEM 5: Visualizações
 ----------------------
 5a. Univariada: comprimento dos textos por categoria
-    → Verifica se categorias têm padrões distintos de tamanho
+    -> Verifica se categorias têm padrões distintos de tamanho
 
 5b. Univariada: distribuição da norma L2 dos embeddings por classe
-    → Verifica a "energia" vetorial — embeddings muito diferentes
+    -> Verifica a "energia" vetorial — embeddings muito diferentes
       em magnitude podem indicar notícias atípicas
 
 5c. Multivariada: Parallel Coordinates nos 8 primeiros componentes PCA
-    → Mostra padrões multidimensionais por categoria
+    -> Mostra padrões multidimensionais por categoria
 """
 
 print("=" * 65)
@@ -443,7 +443,7 @@ ax.set_ylabel("Norma L2")
 plt.suptitle("")
 plt.tight_layout()
 plt.show()
-print("  → Normas semelhantes entre categorias indicam embeddings comparáveis em magnitude")
+print("  -> Normas semelhantes entre categorias indicam embeddings comparáveis em magnitude")
 
 # --- 5c. Parallel Coordinates (8 PCs) ---
 print("\n[5c] Parallel Coordinates — 8 primeiros componentes PCA:")
@@ -475,8 +475,8 @@ plt.tight_layout()
 plt.show()
 
 var_exp_8 = pca_vis.explained_variance_ratio_.sum() * 100
-print(f"  → Variância explicada pelos 8 PCs: {var_exp_8:.1f}%")
-print("\n✅ Item 5 — Visualizações concluídas.")
+print(f"  -> Variância explicada pelos 8 PCs: {var_exp_8:.1f}%")
+print("\n[OK] Item 5 — Visualizações concluídas.")
 
 
 # =============================================================================
@@ -486,7 +486,7 @@ print("\n✅ Item 5 — Visualizações concluídas.")
 """
 ITEM 6: Projeção PCA 2D
 ------------------------
-Reduzimos os embeddings de 384 → 2 dimensões para visualizar
+Reduzimos os embeddings de 384 -> 2 dimensões para visualizar
 graficamente a separação entre as categorias.
 
 ATENÇÃO: PCA 2D preserva apenas uma fração da variância original.
@@ -510,7 +510,7 @@ print(f"\nVariância explicada:")
 print(f"  PC1: {var1:.2f}%")
 print(f"  PC2: {var2:.2f}%")
 print(f"  Total (2D): {var_total:.2f}%")
-print(f"\n  → Os 2 componentes capturam apenas {var_total:.1f}% da variância.")
+print(f"\n  -> Os 2 componentes capturam apenas {var_total:.1f}% da variância.")
 print(f"     Estrutura restante ({100-var_total:.1f}%) permanece oculta na projeção 2D.\n")
 
 cores_cat = {
@@ -543,7 +543,7 @@ ax.grid(alpha=0.2)
 plt.tight_layout()
 plt.show()
 
-print("✅ Item 6 — PCA 2D concluído.")
+print("[OK] Item 6 — PCA 2D concluído.")
 
 
 # =============================================================================
@@ -564,7 +564,7 @@ HIPÓTESE:
   H2: Business e World terão maior sobreposição, pois compartilham
       termos de política econômica, geopolítica e mercados financeiros.
 
-  H3: O modelo alcançará F1 macro ≥ 0.80, o que indicaria que os
+  H3: O modelo alcançará F1 macro >= 0.80, o que indicaria que os
       embeddings MiniLM são suficientemente discriminativos sem fine-tuning.
 
 EXPECTATIVA por classe (do mais para o menos separável):
@@ -577,15 +577,15 @@ print("=" * 65)
 print("""
 Com base nas visualizações (PCA 2D + Parallel Coordinates):
 
-H1: Sports → mais separável (vocabulário muito específico)
-H2: Business e World → maior sobreposição (vocabulário compartilhado)
-H3: F1 macro esperado ≥ 0.80 (embeddings MiniLM são robustos)
+H1: Sports -> mais separável (vocabulário muito específico)
+H2: Business e World -> maior sobreposição (vocabulário compartilhado)
+H3: F1 macro esperado >= 0.80 (embeddings MiniLM são robustos)
 
 Ordem esperada de separabilidade:
   Sports > Sci/Tech > World ≈ Business
 """)
 
-print("✅ Item 7 — Hipótese formulada.")
+print("[OK] Item 7 — Hipótese formulada.")
 
 
 # =============================================================================
@@ -623,9 +623,9 @@ clf = LogisticRegression(max_iter=3000, random_state=RANDOM_STATE)
 clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
 
-print("─" * 65)
+print("-" * 65)
 print("CLASSIFICATION REPORT")
-print("─" * 65)
+print("-" * 65)
 print(classification_report(y_test, y_pred, target_names=AG_LABEL_NAMES))
 
 fig, ax = plt.subplots(figsize=(7, 6))
@@ -650,16 +650,16 @@ print(f"\nResultados:")
 print(f"  Acurácia geral : {acc*100:.1f}%")
 print(f"  F1 macro       : {f1_macro:.4f}")
 
-print("\n─ Comparação com a Hipótese ─")
+print("\n- Comparação com a Hipótese -")
 if f1_macro >= 0.80:
-    print(f"  ✅ H3 CONFIRMADA: F1 macro = {f1_macro:.2f} ≥ 0.80")
+    print(f"  [OK] H3 CONFIRMADA: F1 macro = {f1_macro:.2f} >= 0.80")
 else:
-    print(f"  ❌ H3 NÃO CONFIRMADA: F1 macro = {f1_macro:.2f} < 0.80")
+    print(f"  [ERRO] H3 NÃO CONFIRMADA: F1 macro = {f1_macro:.2f} < 0.80")
 
 print("\n  Verificar H1 (Sports = melhor F1) e H2 (Business/World = mais confusão)")
 print("  olhando o classification_report e a matriz de confusão acima.\n")
 
-print("✅ Item 8 — Classificação concluída.")
+print("[OK] Item 8 — Classificação concluída.")
 
 
 # =============================================================================
@@ -704,7 +704,7 @@ print("""
    não o classificador.
 """)
 
-print("✅ Item 9 — Limitações documentadas.")
+print("[OK] Item 9 — Limitações documentadas.")
 
 
 # =============================================================================
@@ -754,12 +754,12 @@ acc_noisy = accuracy_score(y_test, clf_noisy.predict(X_test))
 f1_noisy  = f1_score(y_test, clf_noisy.predict(X_test), average="macro")
 
 # --- Comparação ---
-print("─" * 50)
+print("-" * 50)
 print(f"{'Métrica':<20} {'Sem Ruído':>12} {'Com Ruído (10%)':>16}")
-print("─" * 50)
+print("-" * 50)
 print(f"{'Acurácia':<20} {acc_clean*100:>11.1f}% {acc_noisy*100:>15.1f}%")
 print(f"{'F1 Macro':<20} {f1_clean:>12.4f} {f1_noisy:>16.4f}")
-print("─" * 50)
+print("-" * 50)
 print(f"\nImpacto do label noise:")
 print(f"  Queda na acurácia : {(acc_clean - acc_noisy)*100:.1f} pontos percentuais")
 print(f"  Queda no F1 macro : {(f1_clean - f1_noisy):.4f}\n")
@@ -790,7 +790,7 @@ plt.suptitle("Impacto do Label Noise — AG News + MiniLM",
 plt.tight_layout()
 plt.show()
 
-print("✅ Extensão — Label Noise concluída.")
+print("[OK] Extensão — Label Noise concluída.")
 
 # =============================================================================
 # FIM DO TRABALHO
@@ -800,14 +800,14 @@ print("TRABALHO CONCLUÍDO")
 print("=" * 65)
 print("""
 Itens entregues:
-  ✅ 1. Pergunta de investigação
-  ✅ 2. Unidade de análise
-  ✅ 3. Features utilizadas (MiniLM embeddings 384-dim)
-  ✅ 4. Análise de qualidade (ausentes, duplicatas, outliers)
-  ✅ 5. Visualizações (texto bruto, norma L2, Parallel Coords)
-  ✅ 6. Projeção PCA 2D
-  ✅ 7. Hipótese sobre separabilidade
-  ✅ 8. Regressão Logística + métricas
-  ✅ 9. Limitações da análise
-  ✅ Extensão: Label Noise
+  [OK] 1. Pergunta de investigação
+  [OK] 2. Unidade de análise
+  [OK] 3. Features utilizadas (MiniLM embeddings 384-dim)
+  [OK] 4. Análise de qualidade (ausentes, duplicatas, outliers)
+  [OK] 5. Visualizações (texto bruto, norma L2, Parallel Coords)
+  [OK] 6. Projeção PCA 2D
+  [OK] 7. Hipótese sobre separabilidade
+  [OK] 8. Regressão Logística + métricas
+  [OK] 9. Limitações da análise
+  [OK] Extensão: Label Noise
 """)
