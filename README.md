@@ -1,4 +1,4 @@
-# 📰 AG News Embeddings — Dataset Numérico via Sentence Transformers
+#  AG News Embeddings — Dataset Numérico via Sentence Transformers
 
 > **Projeto:** Construção de Dataset Numérico via Embeddings de Texto  
 > **Disciplina:** Ciência de Dados — Doutorado  
@@ -7,7 +7,7 @@
 
 ---
 
-## 📋 Descrição
+##  Descrição
 
 Este projeto constrói um **dataset tabular numérico** a partir de textos de notícias,
 convertendo cada notícia em um vetor de **384 dimensões** usando o modelo
@@ -21,7 +21,7 @@ O objetivo é produzir uma base pronta para análises de:
 
 ---
 
-## 📦 Dataset Gerado
+##  Dataset Gerado
 
 | Atributo | Valor |
 |---|---|
@@ -48,7 +48,7 @@ O objetivo é produzir uma base pronta para análises de:
 
 ---
 
-## 🗂️ Estrutura do Repositório
+##  Estrutura do Repositório
 
 ```
 .
@@ -62,12 +62,12 @@ O objetivo é produzir uma base pronta para análises de:
 
 ---
 
-## 🚀 Como Executar
+##  Como Executar
 
 ### No Google Colab (recomendado)
 
 1. Faça upload do arquivo `trabalho_eda_texto_agnews_COLAB.ipynb`
-2. Ative GPU: `Ambiente de execução → Alterar tipo → T4 GPU`
+2. Ative GPU: `Ambiente de execução -> Alterar tipo -> T4 GPU`
 3. Execute tudo: `Ctrl + F9`
 
 ### Localmente
@@ -84,25 +84,25 @@ python trabalho_eda_texto_agnews.py
 
 ---
 
-## 🔬 Pipeline de Processamento
+##  Pipeline de Processamento
 
 ```
 AG News (Hugging Face)
         ↓
-Amostragem estratificada (250/classe × 4 = 1.000 textos)
+Amostragem estratificada (250/classe x 4 = 1.000 textos)
         ↓
 Sentence Transformer: all-MiniLM-L6-v2
         ↓
 Vetor de 384 dimensões por notícia
         ↓
-DataFrame tabular (1.000 × 392)
+DataFrame tabular (1.000 x 392)
         ↓
 Exportação: agnews_embeddings_1000.csv
 ```
 
 ---
 
-## 📊 Análises Realizadas (EDA)
+##  Análises Realizadas (EDA)
 
 1. **Pergunta de investigação** — separabilidade das categorias via embeddings
 2. **Unidade de análise** — 1 notícia = 1 vetor de 384 dimensões
@@ -117,7 +117,7 @@ Exportação: agnews_embeddings_1000.csv
 
 ---
 
-## 📚 Fontes e Licenciamento
+##  Fontes e Licenciamento
 
 | Recurso | Fonte | Licença |
 |---|---|---|
@@ -125,11 +125,11 @@ Exportação: agnews_embeddings_1000.csv
 | **MiniLM model** | [sentence-transformers/all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) | Apache 2.0 |
 | **Sentence Transformers** | [sbert.net](https://www.sbert.net/) | Apache 2.0 |
 
-> ⚠️ Este dataset é de uso **exclusivamente acadêmico**. Não contém dados pessoais ou sensíveis.
+>  Este dataset é de uso **exclusivamente acadêmico**. Não contém dados pessoais ou sensíveis.
 
 ---
 
-## 📈 Resultados
+##  Resultados
 
 | Classe | Precision | Recall | F1-score |
 |---|---|---|---|
